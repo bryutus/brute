@@ -1,0 +1,25 @@
+version: '3'
+services:
+  app:
+    build: ./docker/go
+    container_name: app
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/app
+    environment:
+      - TZ=Asia/Tokyo
+    ports:
+      - 8080:8080
+    links:
+      - db
+  db:
+    build: ./docker/mysql
+    container_name: db
+    volumes:
+      - ./docker/mysql/data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=app
+      - TZ=Asia/Tokyo
+    command: mysqld --sql_mode="" --character-set-server=utf8 --collation-server=utf8_general_ci
