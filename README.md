@@ -1,2 +1,3 @@
-# golang-clean-architecture-app
-A sample app using Clean Architecture
+# brute
+
+Et tu, Brute?
