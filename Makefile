@@ -9,3 +9,6 @@ go-app:
 
 go-db:
 	docker-compose exec db /bin/bash
+
+deploy:
+	git push heroku main
