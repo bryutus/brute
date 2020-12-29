@@ -1,4 +1,4 @@
-module github.com/bryutus/golang-clean-architecture-app
+module github.com/bryutus/brute
 
 go 1.12
 
