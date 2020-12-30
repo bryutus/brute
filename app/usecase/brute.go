@@ -2,23 +2,28 @@ package usecase
 
 import (
 	"github.com/bryutus/brute/app/domain/model"
-	"github.com/gin-gonic/gin"
+	"github.com/bryutus/brute/app/domain/repository"
 )
 
-type BruteUseCase interface {
-	Find(*gin.Context) (model.Brute, error)
+type bruteUseCaseImplement struct {
+	BruteRepository repository.BruteRepository
 }
 
-type bruteUseCase struct{}
-
-func NewBruteUseCase() BruteUseCase {
-	return &bruteUseCase{}
+type bruteUseCase interface {
+	Exec() (*model.Brute, error)
 }
 
-func (usecase bruteUseCase) Find(c *gin.Context) (model.Brute, error) {
-	brute := &model.Brute{
-		Phrase:       "et tu",
-		LanguageCode: "la",
+func NewBruteUseCaseImplement(bruteRepository repository.BruteRepository) bruteUseCase {
+	return bruteUseCaseImplement{
+		BruteRepository: bruteRepository,
 	}
-	return *brute, nil
+}
+
+func (usecase bruteUseCaseImplement) Exec() (*model.Brute, error) {
+	brute, err := usecase.BruteRepository.FindBy()
+	if err != nil {
+		return nil, err
+	}
+
+	return brute, nil
 }

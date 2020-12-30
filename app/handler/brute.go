@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"github.com/bryutus/brute/app/infrastructure/persistence"
 	"github.com/bryutus/brute/app/usecase"
 	"github.com/gin-gonic/gin"
 )
@@ -8,9 +9,10 @@ import (
 type BruteHandler struct{}
 
 func (handler BruteHandler) Show(c *gin.Context) {
-	usecase := usecase.NewBruteUseCase()
+	bruteRepository := persistence.NewBrutePersistence()
+	usecase := usecase.NewBruteUseCaseImplement(bruteRepository)
 
-	result, err := usecase.Find(c)
+	result, err := usecase.Exec()
 	if err != nil {
 		c.JSON(500, gin.H{"message": err.Error()})
 		return
