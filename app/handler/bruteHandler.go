@@ -8,11 +8,11 @@ import (
 
 type BruteHandler struct{}
 
-func (handler BruteHandler) Show(c *gin.Context) {
+func (handler BruteHandler) Show(code string, c *gin.Context) {
 	bruteRepository := persistence.NewBrutePersistence()
 	usecase := usecase.NewBruteUseCaseImplement(bruteRepository)
 
-	result, err := usecase.Exec()
+	result, err := usecase.Exec(code)
 	if err != nil {
 		c.JSON(500, gin.H{"message": err.Error()})
 		return

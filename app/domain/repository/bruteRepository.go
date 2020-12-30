@@ -5,5 +5,5 @@ import (
 )
 
 type BruteRepository interface {
-	FindBy() (*model.Brute, error)
+	FindBy(code string) (*model.Brute, error)
 }

@@ -11,7 +11,11 @@ func main() {
 	brute := r.Group("/brute")
 	{
 		BruteHandler := handler.BruteHandler{}
-		brute.GET("", BruteHandler.Show)
+
+		brute.GET("", func(c *gin.Context) {
+			code := c.DefaultQuery("language_code", "la")
+			BruteHandler.Show(code, c)
+		})
 	}
 
 	r.Run()

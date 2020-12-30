@@ -10,7 +10,7 @@ type bruteUseCaseImplement struct {
 }
 
 type bruteUseCase interface {
-	Exec() (*model.Brute, error)
+	Exec(code string) (*model.Brute, error)
 }
 
 func NewBruteUseCaseImplement(bruteRepository repository.BruteRepository) bruteUseCase {
@@ -19,8 +19,8 @@ func NewBruteUseCaseImplement(bruteRepository repository.BruteRepository) bruteU
 	}
 }
 
-func (usecase bruteUseCaseImplement) Exec() (*model.Brute, error) {
-	brute, err := usecase.BruteRepository.FindBy()
+func (usecase bruteUseCaseImplement) Exec(code string) (*model.Brute, error) {
+	brute, err := usecase.BruteRepository.FindBy(code)
 	if err != nil {
 		return nil, err
 	}

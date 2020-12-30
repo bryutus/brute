@@ -11,10 +11,10 @@ func NewBrutePersistence() repository.BruteRepository {
 	return &brutePersistence{}
 }
 
-func (bp brutePersistence) FindBy() (*model.Brute, error) {
+func (bp brutePersistence) FindBy(code string) (*model.Brute, error) {
 	brute := &model.Brute{
 		Phrase:       "et tu",
-		LanguageCode: "la",
+		LanguageCode: code,
 	}
 	return brute, nil
 }
