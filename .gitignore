@@ -15,4 +15,4 @@
 # vendor/
 
 # Docker
-/docker/mysql/data
+/docker/postgresql/data

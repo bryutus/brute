@@ -1,5 +1,5 @@
 development:
-  dialect: mysql
-  datasource: root:root@tcp(db:3306)/app?charset=utf8mb4&collation=utf8mb4_general_ci&parseTime=true
+  dialect: postgres
+  datasource: host=db port=5432 dbname=app user=admin password=admin sslmode=disable
   dir: db/migrations
   table: migrations

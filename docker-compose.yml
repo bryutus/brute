@@ -14,12 +14,14 @@ services:
     links:
       - db
   db:
-    build: ./docker/mysql
+    build: ./docker/postgresql
     container_name: db
     volumes:
-      - ./docker/mysql/data:/var/lib/mysql
+      - ./docker/postgresql/data:/var/lib/postgresql/data
     environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=app
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=app
       - TZ=Asia/Tokyo
-    command: mysqld --sql_mode="" --character-set-server=utf8 --collation-server=utf8_general_ci
+    ports:
+        - 5433:5432
