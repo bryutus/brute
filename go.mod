@@ -1,3 +1,5 @@
+// +heroku install github.com/rubenv/sql-migrate
+
 module github.com/bryutus/brute
 
 go 1.12
