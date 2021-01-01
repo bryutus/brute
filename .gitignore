@@ -20,3 +20,6 @@
 
 # Docker
 /docker/postgresql/data
+
+# ENV file
+.env
