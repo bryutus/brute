@@ -7,6 +7,9 @@ stop:
 go-app:
 	docker-compose exec app /bin/bash
 
+app-log:
+	docker logs -f app
+
 go-db:
 	docker-compose exec db /bin/bash
 
@@ -24,3 +27,9 @@ migrate-down:
 
 deploy:
 	git push heroku main
+
+go-prd-app:
+	heroku run bash
+
+go-prd-psql:
+	heroku pg:psql
