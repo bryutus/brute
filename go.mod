@@ -1,4 +1,4 @@
-// +heroku install github.com/rubenv/sql-migrate
+// +heroku install ./... bitbucket.org/liamstask/goose/cmd/goose
 
 module github.com/bryutus/brute
 

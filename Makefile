@@ -14,13 +14,13 @@ go-psql:
 	docker exec -it db psql -U admin -h localhost -d app
 
 migrate-status:
-	docker exec -it app sql-migrate status
+	docker exec -it app goose status
 
 migrate-up:
-	docker exec -it app sql-migrate up
+	docker exec -it app goose up
 
 migrate-down:
-	docker exec -it app sql-migrate down
+	docker exec -it app goose down
 
 deploy:
 	git push heroku main

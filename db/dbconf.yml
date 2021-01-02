@@ -1,0 +1,7 @@
+development:
+  driver: postgres
+  open: host=db port=5432 dbname=app user=admin password=admin sslmode=disable
+
+production:
+  driver: postgres
+  open: $DB_CONNECTION

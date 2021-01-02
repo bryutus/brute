@@ -1,4 +1,6 @@
--- +migrate Up
+
+-- +goose Up
+-- SQL in section 'Up' is executed when this migration is applied
 CREATE SEQUENCE IF NOT EXISTS aphorisms_id_sequence;
 
 CREATE TABLE IF NOT EXISTS aphorisms (
@@ -10,7 +12,9 @@ CREATE TABLE IF NOT EXISTS aphorisms (
   UNIQUE (language_code)
 );
 
--- +migrate Down
+
+-- +goose Down
+-- SQL section 'Down' is executed when this migration is rolled back
 DROP TABLE IF EXISTS aphorisms;
 
 DROP SEQUENCE IF EXISTS aphorisms_id_sequence;
