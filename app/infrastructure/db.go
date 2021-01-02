@@ -41,6 +41,7 @@ func getConfig() string {
 	name := os.Getenv("DB_DATABASE")
 	user := os.Getenv("DB_USERNAME")
 	pass := os.Getenv("DB_PASSWORD")
+	ssl := os.Getenv("DB_SSL")
 
-	return fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable TimeZone=Asia/Tokyo", host, port, user, pass, name)
+	return fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s TimeZone=Asia/Tokyo", host, port, user, pass, name, ssl)
 }
