@@ -20,7 +20,7 @@ func Init() *gorm.DB {
 
 	db, err = gorm.Open("postgres", config)
 	if err != nil {
-		log.Fatalf("Error db init: ", err)
+		log.Fatalf("Error db init: %v", err)
 	}
 
 	return db
@@ -33,7 +33,7 @@ func GetDB() *gorm.DB {
 func getConfig() string {
 	err = godotenv.Load()
 	if err != nil {
-		log.Printf("Alert loading .env:", err)
+		log.Printf("Alert loading .env: %v", err)
 	}
 
 	host := os.Getenv("DB_HOST")
