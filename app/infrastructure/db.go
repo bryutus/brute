@@ -1,7 +1,6 @@
 package infrastructure
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -36,12 +35,5 @@ func getConfig() string {
 		log.Printf("Alert loading .env: %v", err)
 	}
 
-	host := os.Getenv("DB_HOST")
-	port := os.Getenv("DB_PORT")
-	name := os.Getenv("DB_DATABASE")
-	user := os.Getenv("DB_USERNAME")
-	pass := os.Getenv("DB_PASSWORD")
-	ssl := os.Getenv("DB_SSL")
-
-	return fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s TimeZone=Asia/Tokyo", host, port, user, pass, name, ssl)
+	return os.Getenv("DB_CONNECTION")
 }

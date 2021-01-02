@@ -1,6 +1,6 @@
 development:
   driver: postgres
-  open: host=db port=5432 dbname=app user=admin password=admin sslmode=disable
+  open: host=db port=5432 dbname=app user=admin password=admin sslmode=disable TimeZone=Asia/Tokyo
 
 production:
   driver: postgres
