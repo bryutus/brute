@@ -9,8 +9,8 @@ import (
 type BruteHandler struct{}
 
 func (handler BruteHandler) Show(code string, c *gin.Context) {
-	bruteRepository := persistence.NewBrutePersistence()
-	usecase := usecase.NewBruteUseCaseImplement(bruteRepository)
+	aphorismRepository := persistence.NewAphorismPersistence()
+	usecase := usecase.NewBruteUseCaseImplement(aphorismRepository)
 
 	result, err := usecase.Exec(code)
 	if err != nil {

@@ -9,13 +9,13 @@ import (
 	"github.com/bryutus/brute/app/infrastructure/dto"
 )
 
-type brutePersistence struct{}
+type aphorismPersistence struct{}
 
-func NewBrutePersistence() repository.BruteRepository {
-	return &brutePersistence{}
+func NewAphorismPersistence() repository.AphorismRepository {
+	return &aphorismPersistence{}
 }
 
-func (bp brutePersistence) FindBy(code string) (*model.Brute, error) {
+func (bp aphorismPersistence) FindBy(code string) (*model.Aphorism, error) {
 	db := infrastructure.GetDB()
 	aphorismDTO := dto.Aphorism{}
 

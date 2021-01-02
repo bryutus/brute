@@ -8,8 +8,8 @@ type Aphorism struct {
 	LanguageCode string
 }
 
-func (a *Aphorism) ConvertToModel() *model.Brute {
-	return &model.Brute{
+func (a *Aphorism) ConvertToModel() *model.Aphorism {
+	return &model.Aphorism{
 		Phrase:       a.Phrase,
 		LanguageCode: a.LanguageCode,
 	}

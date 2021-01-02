@@ -6,21 +6,21 @@ import (
 )
 
 type bruteUseCaseImplement struct {
-	BruteRepository repository.BruteRepository
+	AphorismRepository repository.AphorismRepository
 }
 
 type bruteUseCase interface {
-	Exec(code string) (*model.Brute, error)
+	Exec(code string) (*model.Aphorism, error)
 }
 
-func NewBruteUseCaseImplement(bruteRepository repository.BruteRepository) bruteUseCase {
+func NewBruteUseCaseImplement(aphorismRepository repository.AphorismRepository) bruteUseCase {
 	return bruteUseCaseImplement{
-		BruteRepository: bruteRepository,
+		AphorismRepository: aphorismRepository,
 	}
 }
 
-func (usecase bruteUseCaseImplement) Exec(code string) (*model.Brute, error) {
-	brute, err := usecase.BruteRepository.FindBy(code)
+func (usecase bruteUseCaseImplement) Exec(code string) (*model.Aphorism, error) {
+	brute, err := usecase.AphorismRepository.FindBy(code)
 	if err != nil {
 		return nil, err
 	}

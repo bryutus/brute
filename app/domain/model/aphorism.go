@@ -1,7 +1,7 @@
 package model
 
-// Brute Domain Model
-type Brute struct {
+// Aphorism Domain Model
+type Aphorism struct {
 	Phrase       string
 	LanguageCode string
 }
