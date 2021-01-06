@@ -3,6 +3,8 @@ package handler
 import (
 	"net/http"
 
+	"github.com/bryutus/brute/app/domain/model"
+
 	"github.com/bryutus/brute/app/infrastructure/persistence"
 	"github.com/bryutus/brute/app/usecase"
 	"github.com/gin-gonic/gin"
@@ -11,6 +13,12 @@ import (
 type BruteHandler struct{}
 
 func (handler BruteHandler) Show(code string, c *gin.Context) {
+	var aphorism model.Aphorism
+	if err := c.ShouldBind(&aphorism); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+
 	aphorismRepository := persistence.NewAphorismPersistence()
 	usecase := usecase.NewBruteUseCaseImplement(aphorismRepository)
 
