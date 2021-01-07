@@ -17,8 +17,7 @@ func main() {
 		BruteHandler := handler.BruteHandler{}
 
 		brute.GET("", func(c *gin.Context) {
-			code := c.DefaultQuery("language_code", "la")
-			BruteHandler.Show(code, c)
+			BruteHandler.Show(c)
 		})
 	}
 

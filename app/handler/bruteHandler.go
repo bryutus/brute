@@ -12,12 +12,14 @@ import (
 
 type BruteHandler struct{}
 
-func (handler BruteHandler) Show(code string, c *gin.Context) {
+func (handler BruteHandler) Show(c *gin.Context) {
 	var aphorism model.Aphorism
 	if err := c.ShouldBind(&aphorism); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
+
+	code := c.DefaultQuery("language_code", "la")
 
 	aphorismRepository := persistence.NewAphorismPersistence()
 	usecase := usecase.NewBruteUseCaseImplement(aphorismRepository)
