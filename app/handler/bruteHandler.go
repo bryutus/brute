@@ -36,3 +36,11 @@ func (handler BruteHandler) Show(c *gin.Context) {
 	})
 	return
 }
+
+func (handler BruteHandler) Create(c *gin.Context) {
+	c.JSON(http.StatusCreated, gin.H{
+		"phrase":        "et tu",
+		"language_code": "la",
+	})
+	return
+}
