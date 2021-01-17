@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/bryutus/brute/app/handler"
 	"github.com/bryutus/brute/app/infrastructure"
+	"github.com/bryutus/brute/app/infrastructure/validator"
 	"github.com/gin-gonic/gin"
 )
 
@@ -11,6 +12,8 @@ func main() {
 	defer db.Close()
 
 	r := gin.Default()
+
+	validator.Register()
 
 	brute := r.Group("/brute")
 	{
