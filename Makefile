@@ -10,6 +10,9 @@ go-app:
 app-log:
 	docker logs -f app
 
+test:
+	docker exec -it app go test -v ./...
+
 go-db:
 	docker-compose exec db /bin/bash
 
