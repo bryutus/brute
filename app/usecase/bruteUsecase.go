@@ -24,6 +24,5 @@ func (usecase bruteUseCaseImplement) Exec(code string) (*model.Aphorism, error) 
 	if err != nil {
 		return nil, err
 	}
-
 	return brute, nil
 }
