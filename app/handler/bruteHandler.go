@@ -3,8 +3,6 @@ package handler
 import (
 	"net/http"
 
-	"github.com/bryutus/brute/app/domain/model"
-
 	"github.com/bryutus/brute/app/infrastructure/persistence"
 	"github.com/bryutus/brute/app/usecase"
 	"github.com/gin-gonic/gin"
@@ -12,9 +10,13 @@ import (
 
 type BruteHandler struct{}
 
+type requestShowAphorism struct {
+	LanguageCode string `form:"language_code" binding:"omitempty,len=2,iso639_1_alpha2"`
+}
+
 func (handler BruteHandler) Show(c *gin.Context) {
-	var aphorism model.Aphorism
-	if err := c.ShouldBind(&aphorism); err != nil {
+	var req requestShowAphorism
+	if err := c.ShouldBind(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
@@ -37,7 +39,18 @@ func (handler BruteHandler) Show(c *gin.Context) {
 	return
 }
 
+type requestCreateAphorism struct {
+	Phrase       string `form:"phrase" binding:"required,min=1"`
+	LanguageCode string `form:"language_code" binding:"required,len=2,iso639_1_alpha2"`
+}
+
 func (handler BruteHandler) Create(c *gin.Context) {
+	var req requestCreateAphorism
+	if err := c.ShouldBind(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+
 	code := c.PostForm("language_code")
 	phrase := c.PostForm("phrase")
 
