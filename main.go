@@ -26,6 +26,10 @@ func main() {
 		brute.POST("", func(c *gin.Context) {
 			BruteHandler.Create(c)
 		})
+
+		brute.PUT("", func(c *gin.Context) {
+			BruteHandler.Update(c)
+		})
 	}
 
 	r.Run()
