@@ -11,7 +11,7 @@ import (
 type BruteHandler struct{}
 
 type requestShowAphorism struct {
-	LanguageCode string `form:"language_code" binding:"omitempty,len=2,iso639_1_alpha2"`
+	LanguageCode string `form:"language_code" binding:"omitempty,len=2,iso639_1_alpha2,not_exists_language_code"`
 }
 
 func (handler BruteHandler) Show(c *gin.Context) {
@@ -41,7 +41,7 @@ func (handler BruteHandler) Show(c *gin.Context) {
 
 type requestCreateAphorism struct {
 	Phrase       string `form:"phrase" binding:"required,min=1"`
-	LanguageCode string `form:"language_code" binding:"required,len=2,iso639_1_alpha2"`
+	LanguageCode string `form:"language_code" binding:"required,len=2,iso639_1_alpha2,exists_language_code"`
 }
 
 func (handler BruteHandler) Create(c *gin.Context) {
@@ -72,7 +72,7 @@ func (handler BruteHandler) Create(c *gin.Context) {
 
 type requestUpdateAphorism struct {
 	Phrase       string `form:"phrase" binding:"required,min=1"`
-	LanguageCode string `form:"language_code" binding:"required,len=2,iso639_1_alpha2"`
+	LanguageCode string `form:"language_code" binding:"required,len=2,iso639_1_alpha2,not_exists_language_code"`
 }
 
 func (handler BruteHandler) Update(c *gin.Context) {
