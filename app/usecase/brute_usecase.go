@@ -1,6 +1,8 @@
 package usecase
 
 import (
+	"fmt"
+
 	"github.com/bryutus/brute/app/domain/model"
 	"github.com/bryutus/brute/app/domain/repository"
 )
@@ -24,5 +26,10 @@ func (usecase bruteUseCaseImplement) Exec(code string) (*model.Aphorism, error) 
 	if err != nil {
 		return nil, err
 	}
+
+	if brute == nil {
+		return nil, fmt.Errorf("record not found: language_code=%s", code)
+	}
+
 	return brute, nil
 }

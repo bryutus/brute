@@ -1,12 +1,14 @@
 package persistence
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/bryutus/brute/app/domain/model"
 	"github.com/bryutus/brute/app/domain/repository"
 	"github.com/bryutus/brute/app/infrastructure"
 	"github.com/bryutus/brute/app/infrastructure/dto"
+	"github.com/jinzhu/gorm"
 )
 
 type aphorismPersistence struct{}
@@ -19,7 +21,12 @@ func (bp aphorismPersistence) FindBy(code string) (*model.Aphorism, error) {
 	db := infrastructure.GetDB()
 	aphorismDTO := dto.Aphorism{}
 
-	if result := db.Where("language_code = ?", code).First(&aphorismDTO); result.Error != nil {
+	res := db.Where("language_code = ?", code).First(&aphorismDTO)
+	if errors.Is(res.Error, gorm.ErrRecordNotFound) {
+		return nil, nil
+	}
+
+	if res.Error != nil {
 		return nil, fmt.Errorf("record not found: language_code=%s", code)
 	}
 
