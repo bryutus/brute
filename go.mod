@@ -2,7 +2,8 @@
 
 module github.com/bryutus/brute
 
-go 1.12
+// +heroku goVersion go1.15
+go 1.15
 
 require (
 	github.com/gin-gonic/gin v1.6.3
