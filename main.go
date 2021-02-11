@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/bryutus/brute/app/handler"
+	bruteHandler "github.com/bryutus/brute/app/handler/brute"
 	"github.com/bryutus/brute/app/infrastructure"
 	"github.com/bryutus/brute/app/infrastructure/validator"
 	"github.com/gin-gonic/gin"
@@ -17,18 +17,19 @@ func main() {
 
 	brute := r.Group("/brute")
 	{
-		BruteHandler := handler.BruteHandler{}
-
+		showHandler := bruteHandler.ShowHandler{}
 		brute.GET("", func(c *gin.Context) {
-			BruteHandler.Show(c)
+			showHandler.Show(c)
 		})
 
+		createHandler := bruteHandler.CreateHandler{}
 		brute.POST("", func(c *gin.Context) {
-			BruteHandler.Create(c)
+			createHandler.Create(c)
 		})
 
+		updateHandler := bruteHandler.UpdateHandler{}
 		brute.PUT("", func(c *gin.Context) {
-			BruteHandler.Update(c)
+			updateHandler.Update(c)
 		})
 	}
 
