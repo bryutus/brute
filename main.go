@@ -11,6 +11,10 @@ func main() {
 	db := infrastructure.Init()
 	defer db.Close()
 
+	router().Run()
+}
+
+func router() *gin.Engine {
 	r := gin.Default()
 
 	validator.Register()
@@ -33,5 +37,5 @@ func main() {
 		})
 	}
 
-	r.Run()
+	return r
 }
