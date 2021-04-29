@@ -25,3 +25,16 @@ services:
       - TZ=Asia/Tokyo
     ports:
         - 5433:5432
+
+  test-db:
+    build: ./docker/postgresql
+    container_name: test-db
+    volumes:
+      - ./docker/postgresql/data:/var/lib/postgresql/test_data
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=test_app
+      - TZ=Asia/Tokyo
+    ports:
+        - 5434:5432
