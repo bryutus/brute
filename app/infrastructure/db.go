@@ -14,8 +14,8 @@ var (
 	err error
 )
 
-func Init() *gorm.DB {
-	config := getConfig()
+func Init(filenames ...string) *gorm.DB {
+	config := getConfig(filenames)
 
 	db, err = gorm.Open("postgres", config)
 	if err != nil {
@@ -29,11 +29,19 @@ func GetDB() *gorm.DB {
 	return db
 }
 
-func getConfig() string {
-	err = godotenv.Load()
+func getConfig(filenames []string) string {
+	err = godotenv.Load(env(filenames))
 	if err != nil {
 		log.Printf("Alert loading .env: %v", err)
 	}
 
 	return os.Getenv("DB_CONNECTION")
+}
+
+func env(files []string) string {
+	env := ".env"
+	for _, f := range files {
+		env = f
+	}
+	return env
 }

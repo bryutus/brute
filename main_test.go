@@ -19,7 +19,7 @@ func TestMain(m *testing.M) {
 }
 
 func Setup() *gorm.DB {
-	db := infrastructure.Init()
+	db := infrastructure.Init(".env.test")
 	return db
 }
 
