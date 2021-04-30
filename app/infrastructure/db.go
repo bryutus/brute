@@ -7,6 +7,7 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/joho/godotenv"
+	"github.com/pressly/goose"
 )
 
 var (
@@ -27,6 +28,26 @@ func Init(filenames ...string) *gorm.DB {
 
 func GetDB() *gorm.DB {
 	return db
+}
+
+func Refresh(filenames ...string) error {
+	config := getConfig(filenames)
+
+	mig, err := goose.OpenDBWithDriver("postgres", config)
+	if err != nil {
+		return err
+	}
+	defer mig.Close()
+
+	if err = goose.Reset(mig, "db/migrations/"); err != nil {
+		return err
+	}
+
+	if err = goose.Up(mig, "db/migrations/"); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func getConfig(filenames []string) string {
