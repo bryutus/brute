@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -19,7 +20,13 @@ func TestMain(m *testing.M) {
 }
 
 func Setup() *gorm.DB {
-	db := infrastructure.Init(".env.test")
+	envfile := ".env.test"
+
+	if err := infrastructure.Refresh(envfile); err != nil {
+		log.Fatalf("Failed to refresh database %v", err)
+	}
+
+	db := infrastructure.Init(envfile)
 	return db
 }
 
