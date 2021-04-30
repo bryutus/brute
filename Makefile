@@ -11,7 +11,7 @@ app-log:
 	docker logs -f app
 
 test:
-	docker exec -it app go test -v ./...
+	docker exec -it app go test -v ./... -count=1 -cover
 
 go-db:
 	docker-compose exec db /bin/bash
