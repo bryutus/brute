@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"net/http/httptest"
@@ -27,33 +28,94 @@ func Setup() *gorm.DB {
 	}
 
 	db := infrastructure.Init(envfile)
+
+	db.Exec("insert into aphorisms (phrase, language_code) values (?, ?) ", "et tu", "la")
+	db.Exec("insert into aphorisms (phrase, language_code) values (?, ?) ", "お前もか", "ja")
+	db.Exec("insert into aphorisms (phrase, language_code) values (?, ?) ", "even you", "en")
+
 	return db
 }
 
-func TestGetBrute(t *testing.T) {
+func TestShowBruteOK(t *testing.T) {
+	testCases := []struct {
+		in            string
+		language_code string
+		phrase        string
+	}{
+		{"", "la", "et tu"},
+		{"ja", "ja", "お前もか"},
+	}
+
 	ts := httptest.NewServer(router())
 	defer ts.Close()
 
-	resp, err := http.Get(fmt.Sprintf("%s/brute", ts.URL))
-	if err != nil {
-		t.Fatalf("Expected no error, got %v", err)
-	}
-	defer resp.Body.Close()
+	for _, test := range testCases {
+		url := fmt.Sprintf("%s/brute?language_code=%s", ts.URL, test.in)
+		if test.in == "" {
+			url = fmt.Sprintf("%s/brute", ts.URL)
+		}
 
-	if resp.StatusCode != http.StatusOK {
-		t.Fatalf("Expected status code %d, got %v", http.StatusOK, resp.StatusCode)
+		resp, err := http.Get(url)
+		if err != nil {
+			t.Fatalf("Expected no error, got %v", err)
+		}
+		defer resp.Body.Close()
+
+		if resp.StatusCode != http.StatusOK {
+			t.Fatalf("Expected status code %d, got %v", http.StatusOK, resp.StatusCode)
+		}
+
+		response := getResponse(resp.Body, t)
+
+		if response["language_code"] != test.language_code {
+			t.Fatalf("Expected response language_code %s, got %s", test.language_code, response["language_code"])
+		}
+
+		if response["phrase"] != test.phrase {
+			t.Fatalf("Expected response phrase %s, got %s", test.phrase, response["phrase"])
+		}
+	}
+}
+
+func TestShowBruteNG(t *testing.T) {
+	testCases := []struct {
+		in      string
+		status  int
+		message string
+	}{
+		{"", 404, "record not found: language_code="},
+		{"isl", 400, "Key: 'requestShowAphorism.LanguageCode' Error:Field validation for 'LanguageCode' failed on the 'len' tag"},
 	}
 
+	ts := httptest.NewServer(router())
+	defer ts.Close()
+
+	for _, test := range testCases {
+		resp, err := http.Get(fmt.Sprintf("%s/brute?language_code=%s", ts.URL, test.in))
+		if err != nil {
+			t.Fatalf("Expected no error, got %v", err)
+		}
+		defer resp.Body.Close()
+
+		if resp.StatusCode != test.status {
+			t.Fatalf("Expected status code %d, got %v", test.status, resp.StatusCode)
+		}
+
+		response := getResponse(resp.Body, t)
+
+		if response["message"] != test.message {
+			t.Fatalf("Expected response error message %s, got %s", test.message, response["message"])
+		}
+	}
+}
+
+func getResponse(r io.Reader, t *testing.T) map[string]string {
 	var response map[string]string
 	buf := new(bytes.Buffer)
-	buf.ReadFrom(resp.Body)
-	err = json.Unmarshal([]byte(buf.String()), &response)
-
-	if response["language_code"] != "la" {
-		t.Fatalf("Expected response language_code la, got %s", response["language_code"])
+	buf.ReadFrom(r)
+	if err := json.Unmarshal([]byte(buf.String()), &response); err != nil {
+		t.Fatalf("Failed unmarshal response")
 	}
 
-	if response["phrase"] != "et tu" {
-		t.Fatalf("Expected response phrase et tu, got %s", response["phrase"])
-	}
+	return response
 }
