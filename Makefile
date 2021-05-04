@@ -11,7 +11,11 @@ app-log:
 	docker logs -f app
 
 test:
-	docker exec -it app go test -v ./... -count=1 -cover
+	docker exec -it app go test -v ./... -count=1
+
+test-coverage:
+	docker exec -it app go test -race -timeout 30m -coverprofile=coverage.txt -covermode=atomic ./...
+	docker exec -it app go tool cover -html=coverage.txt -o coverage.html
 
 go-db:
 	docker-compose exec db /bin/bash
