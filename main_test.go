@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"net/url"
+	"strings"
 	"testing"
 
 	"github.com/bryutus/brute/app/infrastructure"
@@ -171,6 +172,96 @@ func TestCreateBruteNG(t *testing.T) {
 		args.Add("phrase", test.phrase)
 
 		resp, err := http.PostForm(fmt.Sprintf("%s/brute", ts.URL), args)
+		if err != nil {
+			t.Fatalf("Expected no error, got %v", err)
+		}
+		defer resp.Body.Close()
+
+		if resp.StatusCode != test.status {
+			t.Fatalf("Expected status code %d, got %v", test.status, resp.StatusCode)
+		}
+
+		response := getResponse(resp.Body, t)
+
+		if response["message"] != test.message {
+			t.Fatalf("Expected response message %s, got %s", test.message, response["message"])
+		}
+	}
+}
+
+func TestUpdateBruteOK(t *testing.T) {
+	testCases := []struct {
+		language_code string
+		phrase        string
+		status        int
+	}{
+		{"la", "et tū", 201},
+	}
+
+	ts := httptest.NewServer(router())
+	defer ts.Close()
+
+	for _, test := range testCases {
+		args := url.Values{}
+		args.Add("language_code", test.language_code)
+		args.Add("phrase", test.phrase)
+
+		req, err := http.NewRequest(http.MethodPut, fmt.Sprintf("%s/brute", ts.URL), strings.NewReader(args.Encode()))
+		if err != nil {
+			t.Fatalf("Expected no error, got %v", err)
+		}
+		req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+
+		client := &http.Client{}
+		resp, err := client.Do(req)
+		if err != nil {
+			t.Fatalf("Expected no error, got %v", err)
+		}
+		defer resp.Body.Close()
+
+		if resp.StatusCode != test.status {
+			t.Fatalf("Expected status code %d, got %v", test.status, resp.StatusCode)
+		}
+
+		response := getResponse(resp.Body, t)
+		fmt.Println(response)
+
+		if response["language_code"] != test.language_code {
+			t.Fatalf("Expected response language_code %s, got %s", test.language_code, response["language_code"])
+		}
+
+		if response["phrase"] != test.phrase {
+			t.Fatalf("Expected response phrase %s, got %s", test.phrase, response["phrase"])
+		}
+	}
+}
+
+func TestUpdateBruteNG(t *testing.T) {
+	testCases := []struct {
+		language_code string
+		phrase        string
+		status        int
+		message       string
+	}{
+		{"de", "du auch", 400, "Key: 'requestUpdateAphorism.LanguageCode' Error:Field validation for 'LanguageCode' failed on the 'not_exists_language_code' tag"},
+	}
+
+	ts := httptest.NewServer(router())
+	defer ts.Close()
+
+	for _, test := range testCases {
+		args := url.Values{}
+		args.Add("language_code", test.language_code)
+		args.Add("phrase", test.phrase)
+
+		req, err := http.NewRequest(http.MethodPut, fmt.Sprintf("%s/brute", ts.URL), strings.NewReader(args.Encode()))
+		if err != nil {
+			t.Fatalf("Expected no error, got %v", err)
+		}
+		req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+
+		client := &http.Client{}
+		resp, err := client.Do(req)
 		if err != nil {
 			t.Fatalf("Expected no error, got %v", err)
 		}
