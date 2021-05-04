@@ -1,11 +1,11 @@
 up:
-	docker-compose up -d
+	docker compose up -d
 
 stop:
-	docker-compose stop
+	docker compose stop
 
 go-app:
-	docker-compose exec app /bin/bash
+	docker compose exec app /bin/bash
 
 app-log:
 	docker logs -f app
@@ -18,7 +18,7 @@ test-coverage:
 	docker exec -it app go tool cover -html=coverage.txt -o coverage.html
 
 go-db:
-	docker-compose exec db /bin/bash
+	docker compose exec db /bin/bash
 
 go-psql:
 	docker exec -it db psql -U admin -h localhost -d app
